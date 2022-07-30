@@ -6,7 +6,7 @@ module.exports = {
   mode: 'development',
   entry: {
     main: './src/main.ts',
-    synth: './src/synth.ts',
+    synth: './src/synth/synth.ts',
   },
   devtool: 'inline-source-map',
   module: {
