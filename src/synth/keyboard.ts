@@ -1,5 +1,10 @@
-export const keyboard = [
-  { note: 'C0', freq: 16.35 },
+export const KeyboardKeys = [
+  'y','s','x','d','c','v','g','b','h','n','j','m',
+  'q','2','w','3','e','r','5','t','6','z','7','u',
+]
+
+export const ToneKeys = [
+  /*{ note: 'C0', freq: 16.35 },
   { note: 'Db0', freq: 17.32 },
   { note: 'D0', freq: 18.35 },
   { note: 'Eb0', freq: 19.45 },
@@ -34,7 +39,7 @@ export const keyboard = [
   { note: 'Ab2', freq: 103.83 },
   { note: 'A2', freq: 110.00 },
   { note: 'Bb2', freq: 116.54 },
-  { note: 'B2', freq: 123.47 },
+  { note: 'B2', freq: 123.47 },*/
   { note: 'C3', freq: 130.81 },
   { note: 'Db3', freq: 138.59 },
   { note: 'D3', freq: 146.83 },
@@ -71,7 +76,7 @@ export const keyboard = [
   { note: 'A5', freq: 880.00 },
   { note: 'Bb5', freq: 932.33 },
   { note: 'B5', freq: 987.77 },
-  { note: 'C6', freq: 1046.50 },
+  /*{ note: 'C6', freq: 1046.50 },
   { note: 'Db6', freq: 1108.73 },
   { note: 'D6', freq: 1174.66 },
   { note: 'Eb6', freq: 1244.51 },
@@ -106,5 +111,5 @@ export const keyboard = [
   { note: 'Ab8', freq: 6644.88 },
   { note: 'A8', freq: 7040.00 },
   { note: 'Bb8', freq: 7458.62 },
-  { note: 'B8', freq: 7902.13 },
+  { note: 'B8', freq: 7902.13 },*/
 ];

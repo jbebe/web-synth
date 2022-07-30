@@ -1,0 +1,27 @@
+@use "sass:math";
+
+.keyboard {
+  width: 100%;
+  position: relative;
+  text-transform: capitalize;
+  font-weight: bold;
+  font-size: 11px;
+
+  > div {
+    position: absolute;
+    height: 100px;
+    border: black 1px solid;
+    z-index: 1;
+
+    &:active, &.flat:active,
+    &.active, &.flat.active {
+      background: gray;
+    }
+
+    &.flat {
+      height: 50px;
+      background: black;
+      z-index: 2;
+    }
+  }
+}
