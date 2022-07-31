@@ -1,0 +1,28 @@
+.sequencer {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0 0;
+
+    tr {
+      padding: 0;
+      margin: 0;
+
+      td {
+        padding: 0;
+        margin: 0;
+        border: 1px solid black;
+        border-top: none;
+        border-left: none;
+
+        &:not(:first-child):active, &:not(:first-child).active {
+          background: grey;
+        }
+
+        &:nth-child(4n+1) {
+          border-right: 3px solid black;
+        }
+      }
+    }
+  }
+}

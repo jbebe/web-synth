@@ -1,6 +1,6 @@
 import * as React from "react"
 import { SampleRate } from "./shared/constants"
-import { SynthMessage, WaveType } from "./shared/types"
+import { Sequence, SynthMessage, WaveType } from "./shared/types"
 
 class SynthService {
   audioContext?: AudioContext
@@ -33,6 +33,13 @@ class SynthService {
   async setType(type: WaveType){
     const buffer = new Uint32Array([type]).buffer
     const message: SynthMessage = { type: 'wave-type', data: buffer }
+    this.whiteNoiseNode.port.postMessage(message, [buffer])
+  }
+
+  async setSequence(seq: Sequence){
+    if (!this.audioContext) await this.initialize()
+    const buffer = new TextEncoder().encode(JSON.stringify(seq)).buffer
+    const message: SynthMessage = { type: 'sequencer-data', data: buffer }
     this.whiteNoiseNode.port.postMessage(message, [buffer])
   }
 }
