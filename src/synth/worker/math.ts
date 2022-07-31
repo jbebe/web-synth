@@ -10,4 +10,8 @@ export namespace CustomMath {
   export function triangle(x: number){
     return Math.asin(Math.sin(x)) / (Math.PI*0.5)
   }
+  
+  export function sawtooth(x: number){
+    return x % (2.0 * Math.PI)
+  }
 }

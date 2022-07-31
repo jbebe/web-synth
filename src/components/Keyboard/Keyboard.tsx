@@ -24,7 +24,6 @@ export const Keyboard = () => {
     return { width: `${width}%`, left: `${left}%` }
   }
   useEffect(() => {
-    console.log('keydown inited')
     window.addEventListener('keydown', ev => {
       const indexOfKey = KeyboardKeys.indexOf(ev.key.toLowerCase())
       if (indexOfKey === -1) return

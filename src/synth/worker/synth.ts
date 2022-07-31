@@ -2,24 +2,25 @@ import { SynthMessage, WaveType } from "synth/shared/types"
 import { Waves } from "./waves"
 
 type KeyMap = {
-  [key: number]: Waves.IWaveGenerator
+  [key: number]: number
 }
 
 class WhiteNoiseProcessor extends AudioWorkletProcessor {
-  private keys: KeyMap = {}
-  private waveType: WaveType = WaveType.Triangle
+  keys: KeyMap = {}
+  waveType: WaveType = WaveType.Sine
+  wave: Waves.IWaveGenerator
 
   constructor(){
     super()
+    this.wave = createWave(this.waveType)
     this.port.addEventListener('message', ev => {
       const message = ev.data as SynthMessage
       switch (message.type){
         case 'key-press':
         {
           const freq = new Float32Array(message.data)[0]
-          if (!this.keys[freq]){
-            this.keys[freq] = createWave(this.waveType, freq)
-          }
+          if (!this.keys[freq])
+            this.keys[freq] = 0
           break
         }
         case 'key-release':
@@ -31,6 +32,7 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
         case 'wave-type':
         {
           this.waveType = new Uint32Array(message.data)[0] as WaveType
+          this.wave = createWave(this.waveType)
           break
         }
         default: 
@@ -44,9 +46,8 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
     const output = outputs[0]
     
     for (const channel of output){
-      // console.log([channel.length, sampleRate]) --> 128,48000
       for (let i = 0; i < channel.length; i++) {
-        channel[i] = aggregate(this.keys)
+        channel[i] = aggregate(this.keys, this.wave)
       }
     }
 
@@ -56,25 +57,30 @@ class WhiteNoiseProcessor extends AudioWorkletProcessor {
 
 registerProcessor('white-noise-processor', WhiteNoiseProcessor)
 
-function aggregate(keys: KeyMap): number {
-  const waves: Waves.IWaveGenerator[] = Object.values(keys)
-  if (waves.length === 0) return 0
-  let value = 0
-  for (const wave of waves){
-    value += wave.step()
+function aggregate(keys: KeyMap, wave: Waves.IWaveGenerator): number {
+  const keyEntries = Object.entries(keys)
+  if (keyEntries.length === 0) return 0
+  let sum = 0
+  for (const [freqStr, oldT] of keyEntries){
+    const { t: newT, value } = wave.step(oldT, +freqStr)
+    keys[+freqStr] = newT
+    sum += value
   }
-  return value / waves.length
+  return sum / keyEntries.length
 }
 
-function createWave(waveType: WaveType, freq: number): Waves.IWaveGenerator {
+function createWave(waveType: WaveType): Waves.IWaveGenerator {
   if (waveType === WaveType.Sine){
-    return new Waves.Sine(+freq)
+    return new Waves.Sine()
   }
   if (waveType === WaveType.Square){
-    return new Waves.Square(+freq)
+    return new Waves.Square()
   }
   if (waveType === WaveType.Triangle){
-    return new Waves.Triangle(+freq)
+    return new Waves.Triangle()
+  }
+  if (waveType === WaveType.Sawtooth){
+    return new Waves.Sawtooth()
   }
   throw new Error(`Invalid wave type: ${waveType}`)
 }

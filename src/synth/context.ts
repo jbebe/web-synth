@@ -11,7 +11,6 @@ class SynthService {
   }
 
   async initialize(){
-    console.log('SynthService.initialize()')
     this.audioContext = new AudioContext({ sampleRate: SampleRate })
     await this.audioContext.audioWorklet.addModule('synth.js')
     this.whiteNoiseNode = new AudioWorkletNode(this.audioContext, 'white-noise-processor')
